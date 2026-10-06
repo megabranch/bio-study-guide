@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Chapter 2 Study Cards</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --desk:#E6ECF2; --ink:#1F3A5F; --muted:#5B6B7F; --paper:#FFFFFF; --rule:#C9DCEE;
+  --redline:#D64545; --good:#2E7D4F; --goodbg:#E3F3EA; --bad:#B23A3A; --badbg:#F8E4E4;
+  --chip:#FFFFFF; --chipon:#1F3A5F; --chipontext:#FFFFFF; --shadow:0 2px 0 rgba(31,58,95,.12),0 10px 24px rgba(31,58,95,.12);
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --desk:#121C28; --ink:#E4ECF5; --muted:#9AAABD; --paper:#1D2A3A; --rule:#2C3E54;
+    --redline:#E06666; --good:#6FCF97; --goodbg:#1C3A2B; --bad:#F08A8A; --badbg:#3E2226;
+    --chip:#1D2A3A; --chipon:#E4ECF5; --chipontext:#121C28; --shadow:0 10px 24px rgba(0,0,0,.4);
+  }
+}
+:root[data-theme="dark"]{
+  --desk:#121C28; --ink:#E4ECF5; --muted:#9AAABD; --paper:#1D2A3A; --rule:#2C3E54;
+  --redline:#E06666; --good:#6FCF97; --goodbg:#1C3A2B; --bad:#F08A8A; --badbg:#3E2226;
+  --chip:#1D2A3A; --chipon:#E4ECF5; --chipontext:#121C28; --shadow:0 10px 24px rgba(0,0,0,.4);
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--desk);color:var(--ink);font-family:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif;font-size:17px;line-height:1.5}
+.wrap{max-width:640px;margin:0 auto;padding:20px 16px 40px}
+h1{font-family:"Kalam","Comic Sans MS",cursive;font-weight:700;font-size:2rem;line-height:1.1;margin:4px 0 2px}
+.sub{color:var(--muted);margin:0 0 18px;font-size:.95rem}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.chip{border:1.5px solid var(--ink);background:var(--chip);color:var(--ink);border-radius:999px;padding:7px 14px;font:inherit;font-size:.95rem;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--chipon);color:var(--chipontext)}
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);border:1.5px solid var(--ink);border-radius:10px;overflow:hidden;margin:6px 0 18px}
+.tabs button{border:0;background:var(--chip);color:var(--ink);font:inherit;font-weight:700;padding:10px 4px;cursor:pointer}
+.tabs button+button{border-left:1.5px solid var(--ink)}
+.tabs button[aria-pressed="true"]{background:var(--chipon);color:var(--chipontext)}
+button:focus-visible{outline:3px solid var(--redline);outline-offset:2px}
+
+.meta{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:.9rem;margin-bottom:8px}
+.scene{perspective:1200px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.card{display:grid;transition:transform .45s ease;transform-style:preserve-3d;min-height:260px}
+.card.flipped{transform:rotateY(180deg)}
+.face{grid-area:1/1;backface-visibility:hidden;-webkit-backface-visibility:hidden;background:var(--paper);border-radius:6px;box-shadow:var(--shadow);
+  padding:44px 22px 22px;position:relative;
+  background-image:linear-gradient(var(--redline),var(--redline)),repeating-linear-gradient(to bottom,transparent 0,transparent 31px,var(--rule) 31px,var(--rule) 32px);
+  background-size:100% 2px,100% 100%;background-position:0 34px,0 36px;background-repeat:no-repeat,repeat}
+.face.back{transform:rotateY(180deg)}
+.tag{position:absolute;top:8px;left:22px;font-size:.8rem;color:var(--muted)}
+.front .term{font-family:"Kalam","Comic Sans MS",cursive;font-weight:700;font-size:clamp(1.6rem,6vw,2.2rem);line-height:1.2;display:flex;align-items:center;justify-content:center;text-align:center;min-height:170px;padding-top:6px}
+.front.q .term{font-size:clamp(1.25rem,4.6vw,1.55rem)}
+.back .def{font-size:1.08rem;line-height:32px;margin:0;padding-top:2px}
+.back .ex{margin:8px 0 0;line-height:32px;color:var(--muted)}
+.hint{text-align:center;color:var(--muted);font-size:.85rem;margin:10px 0 14px}
+
+.btns{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btn{font:inherit;font-weight:700;border-radius:10px;padding:12px;cursor:pointer;border:1.5px solid var(--ink);background:var(--chip);color:var(--ink)}
+.btn.good{border-color:var(--good);color:var(--good)}
+.btn.bad{border-color:var(--bad);color:var(--bad)}
+.tools{display:flex;gap:16px;justify-content:center;margin-top:16px;flex-wrap:wrap}
+.link{background:none;border:0;color:var(--ink);font:inherit;text-decoration:underline;text-underline-offset:3px;cursor:pointer;padding:4px}
+.bar{height:6px;background:var(--rule);border-radius:3px;overflow:hidden;margin-bottom:14px}
+.bar i{display:block;height:100%;background:var(--good);transition:width .3s}
+
+.qbox{background:var(--paper);border-radius:6px;box-shadow:var(--shadow);padding:20px}
+.qtext{font-weight:700;font-size:1.12rem;margin:0 0 14px}
+.opt{display:block;width:100%;text-align:left;font:inherit;padding:12px 14px;margin-bottom:8px;border-radius:8px;border:1.5px solid var(--rule);background:var(--paper);color:var(--ink);cursor:pointer}
+.opt.right{border-color:var(--good);background:var(--goodbg)}
+.opt.wrong{border-color:var(--bad);background:var(--badbg)}
+.opt:disabled{cursor:default}
+.explain{margin:10px 0 0;padding:12px 14px;border-left:4px solid var(--good);background:var(--goodbg);border-radius:4px}
+.explain.miss{border-color:var(--bad);background:var(--badbg)}
+.score{font-family:"Kalam","Comic Sans MS",cursive;font-size:3rem;font-weight:700;text-align:center;margin:6px 0}
+.empty{text-align:center;padding:30px 10px}
+@media (prefers-reduced-motion:reduce){.card{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Chapter 2 study cards</h1>
+  <p class="sub">The Chemistry of Life: Lessons 2.1 to 2.4</p>
+
+  <div class="row" id="lessonRow" role="group" aria-label="Lesson"></div>
+  <div class="tabs" id="modeTabs" role="group" aria-label="Mode">
+    <button data-mode="vocab">Vocab</button>
+    <button data-mode="concepts">Concepts</button>
+    <button data-mode="quiz">Quiz</button>
+  </div>
+  <main id="app"></main>
+</div>
+
+<script>
+const LESSONS = {"2.1":"2.1 Nature of Matter","2.2":"2.2 Properties of Water","2.3":"2.3 Carbon Compounds","2.4":"2.4 Reactions & Enzymes"};
+
+const VOCAB = [
+ ["2.1","Element","A pure substance made of only one type of atom.","Examples: carbon (C), hydrogen (H), sodium (Na), iodine (I)."],
+ ["2.1","Atomic number","The number of protons in an atom's nucleus.","Carbon's atomic number is 6, so every carbon atom has 6 protons."],
+ ["2.1","Trace elements","Elements found in very small amounts in living things (the last ~1%). Small amount, but still essential.","Lacking them can stunt plant growth or harm developing animals."],
+ ["2.1","Isotope","Atoms of the same element that have different numbers of neutrons.","Carbon-12, carbon-13, and carbon-14 are all carbon isotopes."],
+ ["2.1","Mass number","Protons + neutrons in the nucleus. Isotopes are named by it.","Carbon-14: 6 protons + 8 neutrons = 14."],
+ ["2.1","Atomic mass","The weighted average mass of all of an element's isotopes, based on how common each one is in nature.","Weighted = more common isotopes count more."],
+ ["2.1","Radioactive isotope","An isotope with an unstable nucleus that breaks down at a steady rate and gives off radiation.","Carbon-14 is radioactive; carbon-12 and 13 are not."],
+ ["2.1","Compound","A substance formed when two or more elements chemically combine in set proportions.","Water (H₂O) and table salt (NaCl)."],
+ ["2.1","Chemical formula","Shorthand showing which elements are in a compound and in what ratio.","H₂O = 2 hydrogen atoms for every 1 oxygen atom."],
+ ["2.1","Valence electrons","Electrons in an atom's outer shell that are available to form bonds.",""],
+ ["2.1","Ionic bond","A bond formed when electrons are transferred from one atom to another, creating oppositely charged ions that attract.","Sodium gives an electron to chlorine → table salt."],
+ ["2.1","Ion","An atom that has gained or lost electrons, so it has a charge.","Loses electrons → positive (Na⁺). Gains → negative (Cl⁻)."],
+ ["2.1","Covalent bond","A bond formed when atoms share electrons.","Share 2 = single bond, 4 = double, 6 = triple."],
+ ["2.1","Molecule","The structure formed when atoms are joined by covalent bonds. The smallest unit of most compounds.","A water molecule: one O covalently bonded to two H."],
+ ["2.1","Van der Waals forces","Slight attractions between molecules when they are very close together.","Millions of them let a gecko's feet stick to a wall."],
+ ["2.2","Polar molecule","A molecule with unevenly spread charge: one end slightly negative, the other slightly positive. Like a magnet with two poles.","Water: oxygen end (−), hydrogen ends (+)."],
+ ["2.2","Hydrogen bond","The attraction between a slightly positive hydrogen atom and a slightly negative atom (often O or N) on a nearby molecule.","Weaker than ionic or covalent bonds."],
+ ["2.2","Cohesion","Attraction between molecules of the same substance.","Why water forms beads and has surface tension."],
+ ["2.2","Surface tension","The \"skin\" on water's surface caused by cohesion.","Lets some insects and spiders walk on a pond."],
+ ["2.2","Adhesion","Attraction between molecules of different substances.","Water sticking to glass."],
+ ["2.2","Capillary action","Water rising up a narrow tube against gravity, caused by adhesion.","Helps pull water from a plant's roots up to its leaves."],
+ ["2.2","Heat capacity","The amount of energy needed to raise a substance's temperature.","Water's is high, so lakes and oceans warm up slowly."],
+ ["2.2","Mixture","Two or more elements or compounds physically mixed together but not chemically combined.","Air is a mixture of nitrogen, oxygen, CO₂, and other gases."],
+ ["2.2","Solution","A mixture in which all the parts are evenly spread throughout.","Salt water."],
+ ["2.2","Solute","The substance that gets dissolved.","Salt in salt water."],
+ ["2.2","Solvent","The substance that does the dissolving.","Water in salt water."],
+ ["2.2","Saturated solution","A solution where the water has dissolved all the solute it can. Any more just won't dissolve.","Stir too much sugar into iced tea and it piles up at the bottom."],
+ ["2.2","Suspension","A mixture of water and undissolved material broken into pieces so small they don't settle out. Moving water molecules keep them floating.","Blood cells floating in blood."],
+ ["2.2","Hydrogen ion (H⁺)","A positively charged ion formed when a water molecule splits. The more H⁺ in a solution, the more acidic it is.","H₂O ⇌ H⁺ + OH⁻"],
+ ["2.2","Hydroxide ion (OH⁻)","A negatively charged ion formed when a water molecule splits. The more OH⁻ in a solution, the more basic it is.","H₂O ⇌ H⁺ + OH⁻"],
+ ["2.2","pH scale","A scale from 0 to 14 that shows how many H⁺ ions are in a solution. 7 is neutral, below 7 is acidic, above 7 is basic.","Each step is a factor of 10."],
+ ["2.2","Acid","A compound that releases hydrogen ions (H⁺) into a solution. Acidic solutions have a pH below 7.","Stomach acid (HCl) has a pH of 1.5–3.0."],
+ ["2.2","Base","A compound that produces hydroxide ions (OH⁻) in a solution. Basic (alkaline) solutions have a pH above 7.","Lye (NaOH), used in soapmaking, has a pH of 11–14."],
+ ["2.2","Buffer","A weak acid or base that reacts with strong acids or bases to prevent sharp, sudden changes in pH.","Bicarbonate and phosphate ions buffer your blood."],
+ ["2.3","Organic chemistry","The study of compounds that contain carbon.","Chemists once thought living things' compounds were special. Now we know they follow the same rules as nonliving ones."],
+ ["2.3","Macromolecule","A very large (\"giant\") organic molecule found in living things.","Four groups: carbohydrates, lipids, nucleic acids, proteins."],
+ ["2.3","Polymerization","The process of building a large compound by joining many smaller ones together.","Like snapping puzzle pieces into a chain (Figure 2-13)."],
+ ["2.3","Monomer","A small unit that joins with others to form a polymer.","Can be identical (links in a metal watchband) or different (beads in a multicolored necklace)."],
+ ["2.3","Polymer","A large molecule made of many monomers joined together.","Starch is a polymer of sugar molecules."],
+ ["2.3","Carbohydrate","A macromolecule made of carbon, hydrogen, and oxygen, usually in a 1 : 2 : 1 ratio. Used for energy and for structure.","Sugar, starch, and cellulose."],
+ ["2.3","Monosaccharide","A single sugar molecule (simple sugar).","Glucose, galactose (in milk), fructose (in fruit)."],
+ ["2.3","Disaccharide","A compound made by joining two simple sugars.","Table sugar (sucrose) = glucose + fructose."],
+ ["2.3","Polysaccharide","A large carbohydrate (complex carbohydrate) made by joining many monosaccharides together.","Glycogen, starch, and cellulose."],
+ ["2.3","Glycogen","The polysaccharide many animals use to store extra sugar.","Stored in your muscles and broken down into glucose when blood sugar runs low."],
+ ["2.3","Starch","A polysaccharide that plants use to store extra sugar.",""],
+ ["2.3","Cellulose","A tough, flexible polysaccharide that gives plants strength and rigidity.","The main ingredient in wood and paper."],
+ ["2.3","Lipid","A macromolecule made mostly of carbon and hydrogen that generally does not dissolve in water.","Fats, oils, and waxes."],
+ ["2.3","Fatty acid","A long chain of carbon and hydrogen that combines with glycerol to form many lipids.",""],
+ ["2.3","Glycerol","The small molecule that fatty acids attach to when many lipids form.","Three fatty acids + one glycerol = a triglyceride."],
+ ["2.3","Triglyceride","A lipid built from three fatty acids attached to one glycerol molecule.","Olive oil is mostly triglycerides (Figure 2-15)."],
+ ["2.3","Steroid hormones","Lipids that act as chemical messengers in the body.",""],
+ ["2.3","Saturated fat","A lipid whose fatty acids have only single bonds between carbons, so they hold the most hydrogen possible.","Tend to be solid at room temperature (like butter)."],
+ ["2.3","Unsaturated fat","A lipid with at least one carbon-carbon double bond in its fatty acids.","Olive oil; liquid at room temperature."],
+ ["2.3","Polyunsaturated fat","A lipid whose fatty acids have more than one double bond.","Corn, sesame, canola, and peanut oil."],
+ ["2.3","Nucleotide","The monomer of nucleic acids. Made of three parts: a 5-carbon sugar, a phosphate group, and a nitrogenous base.",""],
+ ["2.3","Nucleic acid","A polymer made of nucleotides that stores and transmits genetic (hereditary) information.","DNA and RNA."],
+ ["2.3","DNA","Deoxyribonucleic acid. A nucleic acid containing the sugar deoxyribose.","Its sequence of bases carries information the cell uses to build proteins."],
+ ["2.3","RNA","Ribonucleic acid. A nucleic acid containing the sugar ribose.",""],
+ ["2.3","ATP","Adenosine triphosphate. A nucleotide that captures and transfers chemical energy.",""],
+ ["2.3","Protein","A macromolecule containing nitrogen, carbon, hydrogen, and oxygen. A polymer of amino acids.","Hair and nails are made of the protein keratin."],
+ ["2.3","Amino acid","The monomer of proteins. Has an amino group (–NH₂) on one end and a carboxyl group (–COOH) on the other.","More than 20 different kinds exist in nature."],
+ ["2.3","R-group","The side chain on an amino acid. It's the only part that differs between amino acids.","Can be acidic, basic, polar, nonpolar, or have rings."],
+ ["2.3","Peptide bond","The covalent bond that links one amino acid's amino group to another's carboxyl group. A water molecule is released when it forms.",""],
+ ["2.3","Polypeptide","A chain of amino acids joined by peptide bonds. Proteins are built from one or more polypeptides.",""],
+ ["2.3","Hormone","A chemical messenger that carries signals around the body.","Thyroxine, made in the thyroid from tyrosine and iodine."],
+ ["2.4","Chemical reaction","A process that changes one set of chemicals into another by breaking and forming chemical bonds.","Iron + oxygen → rust (a slow reaction)."],
+ ["2.4","Reactants","The elements or compounds that go into a chemical reaction.","In 2H₂ + O₂ → 2H₂O, the reactants are H₂ and O₂."],
+ ["2.4","Products","The elements or compounds produced by a chemical reaction.","In 2H₂ + O₂ → 2H₂O, the product is water."],
+ ["2.4","Activation energy","The energy needed to get a reaction started.","A match supplies the activation energy to burn paper."],
+ ["2.4","Catalyst","A substance that speeds up a chemical reaction without being used up. It works by lowering the activation energy.",""],
+ ["2.4","Enzyme","A biological catalyst, usually a protein, that speeds up chemical reactions in cells.","Carbonic anhydrase, pepsin."],
+ ["2.4","Substrate","A reactant in an enzyme-catalyzed reaction.","For carbonic anhydrase: carbon dioxide and water."],
+ ["2.4","Active site","The spot on an enzyme where substrates bind. Its shape fits the substrates like a lock and key.",""]
+];
+
+const CONCEPTS = [
+ ["2.1","Which six elements make up about 99% of the mass of living things?","Calcium, carbon, hydrogen, oxygen, nitrogen, and phosphorus.","Trick: \"CHNOPS + Ca\". The other ~1% (trace elements) are still essential."],
+ ["2.1","Carbon's atomic number is 6. How many protons and electrons does a neutral carbon atom have?","6 protons and 6 electrons.","Neutral atoms have equal numbers of protons and electrons."],
+ ["2.1","If all atoms are made of the same three particles, why do elements behave so differently?","Mostly because of their electrons, especially the number in the outer shell. That decides how an atom interacts and reacts with others.","The outer shell is the \"face\" an atom shows its neighbors."],
+ ["2.1","Do isotopes of the same element behave differently in chemical reactions?","No. Isotopes have different masses, but the same chemical properties.","Neutrons change the mass, not the chemistry."],
+ ["2.1","How many neutrons are in carbon-12, carbon-13, and carbon-14? Which is radioactive?","6, 7, and 8 neutrons. Carbon-14 is the radioactive one.","All three have 6 protons and 6 electrons."],
+ ["2.1","Name four uses of radioactive isotopes.","Dating rocks and fossils, detecting cancer, killing bacteria that spoil food, and acting as tracers to follow substances in the body.","Example: iodine-131 collects in the thyroid, so it shows up on a scan."],
+ ["2.1","How do a compound's properties compare to the elements that formed it?","They are usually very different.","Sodium (explosive in water) + chlorine (poisonous gas) → table salt, which is safe and essential to life."],
+ ["2.1","What are the two main types of chemical bonds, and how do they differ?","Ionic bonds: electrons are transferred. Covalent bonds: electrons are shared.",""],
+ ["2.1","How does table salt (NaCl) form?","Sodium loses its one valence electron and becomes Na⁺. Chlorine gains it and becomes Cl⁻. The opposite charges attract, forming an ionic bond.",""],
+ ["2.1","Why do weak interactions matter so much in living things?","Many molecules in cells only need to connect briefly: to send signals, carry out reactions, or copy information.","Examples: van der Waals forces and hydrogen bonds."],
+ ["2.1","How can a gecko stick to a wall?","Its feet have millions of tiny hairs split into even finer fibers. That huge surface area adds up enough van der Waals forces to hold it.",""],
+ ["2.2","Why is water a polar molecule?","Oxygen (8 protons) pulls the shared electrons more strongly than hydrogen (1 proton). So the oxygen end is slightly negative and the hydrogen ends slightly positive.",""],
+ ["2.2","What is the key idea behind water's special properties?","Because water is polar, it forms many hydrogen bonds. Those hydrogen bonds explain most of water's special properties.","One water molecule can be in up to 4 hydrogen bonds at once."],
+ ["2.2","Why does ice float?","Water expands slightly when it freezes, so ice is less dense than liquid water.",""],
+ ["2.2","Why can some insects walk on water?","Cohesion between water molecules creates surface tension, which supports them.",""],
+ ["2.2","Why does water dip in the middle of a graduated cylinder?","Adhesion between water and glass is stronger than cohesion between water molecules, so water climbs the sides.",""],
+ ["2.2","How does water move from a plant's roots up to its leaves?","Capillary action (from adhesion) pulls it up, and cohesion holds the column of water together as it rises.",""],
+ ["2.2","Why does water's high heat capacity matter to living things?","Lakes and oceans can absorb lots of heat with only small temperature changes, protecting organisms from sudden swings.",""],
+ ["2.2","Why do all living things depend on water?","Living things are mostly water (about 60% of the human body), and nearly all the chemical reactions in cells happen in water.",""],
+ ["2.2","How are cohesion and adhesion similar? How are they different?","Similar: both are attractions between molecules (in water, due to hydrogen bonds). Different: cohesion is between the same substance; adhesion is between different substances.","This is the textbook's Reading Check."],
+ ["2.2","What happens when salt dissolves in water?","Polar water molecules attract the Na⁺ and Cl⁻ ions, pull them off the crystal, and surround them. The ions spread evenly, forming a solution.","Salt = solute. Water = solvent."],
+ ["2.2","What's the difference between a mixture and a compound?","A mixture is physically mixed and not chemically combined (like air). A compound is chemically combined in set proportions (like water).",""],
+ ["2.2","What kinds of substances can water dissolve, and why?","Ionic compounds and other polar molecules, because water itself is polar.","Salts, sugars, minerals, gases, even alcohol. That's why water is life's most important solvent."],
+ ["2.2","What's the difference between a solution and a suspension?","In a solution, the substance actually dissolves and spreads evenly. In a suspension, it doesn't dissolve; tiny pieces just stay floating.",""],
+ ["2.2","Why is blood both a solution and a suspension?","Its water contains many dissolved compounds (solution), plus cells and other particles that stay undissolved and floating (suspension).",""],
+ ["2.2","In a cup of tea, what is the solvent and what is the solute?","Water is the solvent. The substances from the tea leaves (and any sugar) are the solutes.","This is the textbook's Reading Check."],
+ ["2.2","What happens when a water molecule splits apart?","It forms a hydrogen ion (H⁺) and a hydroxide ion (OH⁻): H₂O ⇌ H⁺ + OH⁻. The double arrows mean the reaction can go in either direction.","In pure water, only about 1 in 550 million water molecules splits this way."],
+ ["2.2","Why is pure water electrically neutral?","When water splits, it makes exactly one H⁺ for every OH⁻. Equal positive and negative ions cancel out.","That's also why pure water has a pH of 7."],
+ ["2.2","What does each step on the pH scale mean?","Each step is a factor of 10. A pH 4 solution has 10 times as many H⁺ ions as a pH 5 solution.","Two steps = 100×. pH 3 has 100 times as many H⁺ as pH 5."],
+ ["2.2","Where do these fall on the pH scale: stomach acid, lemon juice, tomato juice, milk, pure water, blood, seawater, soap, bleach, oven cleaner?","Acidic: stomach acid (~1–2, most acidic), lemon juice (~2), tomato juice (~4), milk (~6). Neutral: pure water (7), blood (just above 7). Basic: seawater (~8), soap (~10), bleach (~12–13), oven cleaner (~13–14, most basic).","From Figure 2-10."],
+ ["2.2","How can you tell an acid from a base using pH?","Acidic: pH below 7, more H⁺ ions than OH⁻ ions. Basic: pH above 7, more OH⁻ ions than H⁺ ions. The lower the pH, the more acidic; the higher, the more basic.","Pure water is in the middle at 7 (neutral), with equal H⁺ and OH⁻."],
+ ["2.2","Why must cells keep their pH between about 6.5 and 7.5?","If pH goes too high or too low, it disrupts the chemical reactions inside cells. Keeping pH steady is part of homeostasis (keeping internal conditions stable).",""],
+ ["2.2","How does the body keep blood at a pH of about 7.4?","Buffers like bicarbonate and phosphate ions react with extra acid or base and prevent sudden pH changes.","Buffers in body fluids play a key role in homeostasis."],
+ ["2.2","What happens when you add acid to a buffered vs. an unbuffered solution?","Unbuffered: pH drops sharply. Buffered: pH changes only slightly.","Figure 2-11."],
+ ["2.3","Why is the chemistry of carbon called \"organic chemistry\"?","Chemists once thought the compounds in living things were different from nonliving ones and called them \"organic.\" The name stuck, and now it just means the chemistry of carbon.",""],
+ ["2.3","What are the two reasons carbon is so special?","1) It has 4 valence electrons, so it forms strong covalent bonds with many elements (H, O, P, S, N). 2) Carbon atoms bond to each other, forming chains of almost any length, and even rings.","No other element can build molecules as large or varied."],
+ ["2.3","What kinds of bonds can carbon form with other carbons? Give examples.","Single, double, or triple covalent bonds. Methane has single bonds, butadiene has double bonds, acetylene has a triple bond, and benzene forms a ring.","In a structure drawing, each line = one covalent bond (Figure 2-12)."],
+ ["2.3","What are the four major groups of macromolecules?","Carbohydrates, lipids, nucleic acids, and proteins.",""],
+ ["2.3","Match each macromolecule to its building block.","Carbohydrates → simple sugars. Lipids → glycerol + fatty acids. Nucleic acids → nucleotides. Proteins → amino acids.",""],
+ ["2.3","What do organisms use carbohydrates for?","To store and release energy, and for structural support and protection.","Glucose gives quick energy; starch stores extra sugar; cellulose gives plants strength."],
+ ["2.3","How do animals and plants store extra sugar differently?","Animals store it as glycogen. Plants store it as starch. Both are polysaccharides made of glucose.","Plants also make cellulose for structure."],
+ ["2.3","What happens to glycogen when your blood glucose runs low?","Glycogen is broken down into glucose, which is released into the blood.","Glycogen in your muscles also supplies energy for muscle contraction and movement."],
+ ["2.3","What is starch made of, and what foods are full of it?","Glucose (sugar) molecules joined in a long chain. Potatoes, bread, and pasta are mostly starch.","Figure 2-14."],
+ ["2.3","What do organisms use lipids for?","To store energy, to build biological membranes and waterproof coverings, and (as steroid hormones) to act as chemical messengers.","Examples: fats, oils, and waxes."],
+ ["2.3","How are saturated fats different from unsaturated fats?","Saturated: only single carbon-carbon bonds, as much hydrogen as possible. Unsaturated: at least one carbon-carbon double bond. Unsaturated fats (like olive oil) tend to be liquid at room temperature.","This is the textbook's Reading Check."],
+ ["2.3","What are the three parts of a nucleotide?","A 5-carbon sugar, a phosphate group, and a nitrogenous base.","Figure 2-16."],
+ ["2.3","What do nucleic acids do, and how do DNA and RNA differ?","They store and transmit genetic information. RNA contains the sugar ribose; DNA contains deoxyribose.","The order of bases holds instructions for building proteins."],
+ ["2.3","What are the main jobs of proteins?","Control the rate of reactions and regulate cell processes, form cell structures, transport substances into or out of cells, and help fight disease.","Also: receptor proteins let cells communicate."],
+ ["2.3","How does a peptide bond form?","The amino group of one amino acid links to the carboxyl group of another, and a water molecule (H₂O) is released.","Figure 2-18: alanine + serine."],
+ ["2.3","Why can any amino acid join to any other amino acid?","All amino acids are identical in the regions where they bond, so an amino group can always link to a carboxyl group.",""],
+ ["2.3","Why are proteins so diverse?","There are more than 20 amino acids, and their R-groups vary a lot: acidic or basic, polar or nonpolar, some with rings.","Methionine and cysteine contain sulfur in their R-groups."],
+ ["2.3","What are the four levels of protein structure?","Primary: the sequence of amino acids. Secondary: folding or coiling of the chain. Tertiary: the full 3-D shape of one chain. Fourth level: how multiple chains fit together.","The fourth level only applies to proteins with more than one chain."],
+ ["2.3","What is hemoglobin, and how is it built?","A protein in red blood cells that carries oxygen. It has four subunits, each with an iron-containing heme group that binds oxygen and gives blood its red color.","Figure 2-20."],
+ ["2.3","What holds a protein in its shape?","Ionic and covalent bonds, plus van der Waals forces and hydrogen bonds.",""],
+ ["2.3","How does thyroxine send a signal to cells?","It binds to a specific receptor protein on cell surfaces, which increases cell activity.","Too little thyroxine in childhood can affect brain and nervous system development."],
+ ["2.3","Which four elements make up 96% of living things?","Oxygen, carbon, hydrogen, and nitrogen.","Trace elements case study."],
+ ["2.3","Name the jobs of these trace elements: phosphorus, potassium, sulfur, sodium, chlorine, magnesium, iron.","Phosphorus: bones and teeth. Potassium: nerve function. Sulfur: in two amino acids. Sodium: nerves and blood levels. Chlorine: fluid balance. Magnesium: bones and muscles. Iron: carrying oxygen in blood.","Others: fluorine, copper, zinc, iodine."],
+ ["2.3","Is an element's importance related to how much of your body weight it makes up?","No. Iron is only 0.006% of body weight but is essential for carrying oxygen in the blood.","Case study question 1."],
+ ["2.3","Do the four macromolecules make up all the important compounds in the body?","No. Water isn't a macromolecule but makes up about 60% of the body, and ions like sodium and potassium are essential for nerves.","Case study question 2. Good evidence to cite: water, minerals, trace elements."],
+ ["2.4","What actually changes during a chemical reaction?","The chemical bonds that join atoms in compounds. Old bonds break and new ones form.","Mass and energy are conserved: nothing is created or destroyed."],
+ ["2.4","How do energy-releasing and energy-absorbing reactions differ?","Energy-releasing reactions often happen on their own (spontaneously). Energy-absorbing reactions need a source of energy.","Energy changes are a key factor in whether a reaction happens."],
+ ["2.4","What happens when hydrogen gas burns, and what about the reverse?","2H₂ + O₂ → 2H₂O releases energy as heat (and light and sound if it explodes). Splitting water back into H₂ and O₂ absorbs so much energy it needs an electric current.","One direction releases energy; the other requires it."],
+ ["2.4","Why does every organism need a source of energy?","Staying alive requires reactions that absorb energy, and energy can't be created. Plants trap energy from sunlight; animals get it by eating plants or other animals.",""],
+ ["2.4","Why don't the pages of a book burst into flames on their own?","Even energy-releasing reactions need activation energy to start. Paper only burns when a flame supplies that energy.",""],
+ ["2.4","On an activation energy graph, what does the peak show?","The energy needed for the reaction to go forward. Activation energy = peak minus the energy of the reactants.","Both energy-releasing and energy-absorbing reactions have activation energy (Figure 2-22)."],
+ ["2.4","On the graphs, how can you tell if a reaction releases or absorbs energy?","Releases energy: products end lower than reactants. Absorbs energy: products end higher than reactants.","Figure 2-22."],
+ ["2.4","How do enzymes speed up reactions?","They lower the activation energy, so the reaction happens much faster.","Figure 2-23."],
+ ["2.4","What does carbonic anhydrase do, and why does it matter?","It speeds up CO₂ + water → carbonic acid by about 10 million times, so CO₂ is removed from the blood quickly.","It also speeds up the reverse reaction, which removes water from carbonic acid."],
+ ["2.4","Why are enzymes so specific, and how are they named?","Each enzyme generally catalyzes only one reaction, so part of its name usually comes from that reaction.","Carbonic anhydrase."],
+ ["2.4","What must happen for reactants to react?","They must collide with enough energy to break existing bonds and form new ones. Otherwise they stay unchanged.",""],
+ ["2.4","How do substrates and enzymes fit together?","Substrates bind to the active site, which has a complementary shape (like a lock and key). Weak interactions like hydrogen bonds and van der Waals forces hold them.","The enzyme brings reactants together, lowering the energy needed."],
+ ["2.4","What conditions can stop an enzyme from working, and why?","High temperature and extreme pH can weaken hydrogen bonds, making the protein unfold and wrecking the active site.","An enzyme's activity depends on the shape of its active site."],
+ ["2.4","What conditions do human enzymes and pepsin work best in?","Most human enzymes: around 37°C (body temperature). Pepsin, a stomach enzyme: acidic conditions.",""],
+ ["2.4","How do cells switch enzymes on and off?","Molecules that carry chemical signals inside cells regulate enzyme activity.",""],
+ ["2.4","What roles do enzymes play in cells?","They run chemical pathways, make materials cells need, release energy, and transfer information.",""]
+];
+
+// [lesson, question, correct, wrong1, wrong2, wrong3, explanation]
+const QUIZ = [
+ ["2.1","An element's atomic number tells you the number of…","protons in the nucleus","neutrons in the nucleus","protons plus neutrons","electron shells","Atomic number = protons. Protons + neutrons is the mass number."],
+ ["2.1","Carbon-14 has 6 protons. How many neutrons does it have?","8","6","14","20","Mass number 14 − 6 protons = 8 neutrons."],
+ ["2.1","Isotopes of the same element differ in their number of…","neutrons","protons","electrons","chemical properties","Same protons, different neutrons. Chemical properties stay the same."],
+ ["2.1","The total number of protons and neutrons in a nucleus is the…","mass number","atomic number","atomic mass","valence number","Atomic mass is the weighted average of isotope masses, which is different."],
+ ["2.1","Which is NOT one of the six elements that make up ~99% of living things?","Iron","Nitrogen","Phosphorus","Calcium","The six: calcium, carbon, hydrogen, oxygen, nitrogen, phosphorus."],
+ ["2.1","An ionic bond forms when electrons are…","transferred from one atom to another","shared between two atoms","added to the nucleus","pulled toward a nearby molecule","Sharing electrons is a covalent bond."],
+ ["2.1","A neutral atom that loses an electron becomes a…","positive ion","negative ion","new isotope","molecule","Fewer electrons than protons → positive charge."],
+ ["2.1","When two atoms share four electrons, they form a…","double bond","single bond","triple bond","ionic bond","Single = 2 shared, double = 4, triple = 6."],
+ ["2.1","Which force lets a gecko stick to a wall?","Van der Waals forces","Ionic bonds","Covalent bonds","Magnetism","Many tiny van der Waals attractions add up across the gecko's foot hairs."],
+ ["2.1","Sodium is explosive in water and chlorine is a poisonous gas, yet table salt is safe. This shows that…","a compound's properties can be very different from its elements","elements keep their properties in compounds","salt is a mixture, not a compound","chlorine loses its electrons in salt","Compounds usually have very different properties from the elements that form them."],
+ ["2.1","Why is radioactive iodine-131 useful for medical imaging?","It collects in the thyroid, so the scan shows that gland","It kills all bacteria in the body","It is not radioactive","It turns into carbon-14","Iodine concentrates in the thyroid, so the radiation reveals its location."],
+ ["2.1","Valence electrons are electrons that…","are in the outer shell and available for bonding","are found inside the nucleus","have no charge","are only found in ions","Bonds form using valence electrons."],
+ ["2.2","Water is polar because…","oxygen pulls shared electrons more strongly than hydrogen","hydrogen has more protons than oxygen","water is made of ions","water is a mixture","Oxygen's 8 protons attract electrons more than hydrogen's single proton."],
+ ["2.2","A hydrogen bond is an attraction between…","a slightly positive hydrogen and a slightly negative atom on another molecule","two atoms that share electrons","two ions with the same charge","two oxygen atoms","It's a weak attraction between molecules, not a sharing of electrons."],
+ ["2.2","A single water molecule can be part of up to how many hydrogen bonds at once?","4","1","2","8","That's why water is so cohesive."],
+ ["2.2","An insect walking on a pond is an example of…","cohesion (surface tension)","adhesion","capillary action","heat capacity","Cohesion between water molecules creates surface tension."],
+ ["2.2","Water rising up a narrow glass tube is called…","capillary action","surface tension","cohesion only","a suspension","Adhesion to the glass pulls water up; cohesion holds the column together."],
+ ["2.2","The water surface in a graduated cylinder dips in the middle because…","adhesion to glass is stronger than cohesion between water molecules","cohesion is stronger than adhesion","the glass repels water","water is less dense at the edges","Water climbs the glass walls, leaving the center lower."],
+ ["2.2","Lakes change temperature slowly because water has…","a high heat capacity","a low heat capacity","no hydrogen bonds","strong ionic bonds","It takes a lot of energy to warm water up."],
+ ["2.2","Ice floats on liquid water because…","water expands when it freezes, making ice less dense","ice has more hydrogen atoms","ice is a mixture","cold things always float","Expanded = less dense = floats."],
+ ["2.2","In salt water, the water is the…","solvent","solute","suspension","compound being dissolved","Solvent dissolves; solute (salt) gets dissolved."],
+ ["2.2","Which best describes a mixture?","Substances physically mixed but not chemically combined","Elements chemically combined in set proportions","A single type of atom","Atoms joined by covalent bonds","Air is a mixture; water is a compound."],
+ ["2.2","About what percent of the human body's mass is water?","60%","25%","40%","90%","That's why nearly all cell reactions happen in water."],
+ ["2.2","In a solution, the components are…","evenly distributed throughout","separated into layers","chemically bonded together","always solids","Even distribution is what makes it a solution."],
+ ["2.2","When water has dissolved all the solute it possibly can, the solution is…","saturated","a suspension","buffered","neutral","Any extra solute won't dissolve."],
+ ["2.2","Because water is polar, it can dissolve…","ionic compounds and other polar molecules","only ionic compounds","only gases","nothing that is polar","Water dissolves salts, sugars, minerals, gases, and even alcohol."],
+ ["2.2","Blood cells floating in blood are an example of a…","suspension","solution","saturated solution","compound","The cells don't dissolve; they stay suspended. Blood is both a solution and a suspension."],
+ ["2.2","In a cup of tea, water is the…","solvent","solute","suspension","buffer","Water does the dissolving; the tea compounds are the solutes."],
+ ["2.2","An acid is a compound that releases…","H⁺ ions","OH⁻ ions","electrons","neutrons","Bases are the ones that produce OH⁻ ions."],
+ ["2.2","A solution with a pH of 3 is…","acidic","basic","neutral","saturated","Below 7 = acidic. Above 7 = basic."],
+ ["2.2","Lye (NaOH), with a pH of 11–14, is a strong…","base","acid","buffer","solvent","High pH = base. It produces OH⁻ ions."],
+ ["2.2","What do buffers do?","Prevent sharp, sudden changes in pH","Make solutions more acidic","Dissolve ionic compounds","Turn solutions into suspensions","Buffers are weak acids or bases that react with strong acids or bases."],
+ ["2.2","What is the normal pH of human blood?","7.4","1.5","6.0","11","Buffers like bicarbonate and phosphate keep it there."],
+ ["2.2","The pH inside most human cells must generally stay between…","6.5 and 7.5","1.5 and 3.0","8 and 10","11 and 14","Outside this range, cell reactions are disrupted."],
+ ["2.2","When a water molecule splits, it forms…","H⁺ and OH⁻ ions","H₂ and O₂ gas","Na⁺ and Cl⁻ ions","two hydrogen bonds","H₂O ⇌ H⁺ + OH⁻"],
+ ["2.2","In the equation H₂O ⇌ H⁺ + OH⁻, the double arrows mean…","the reaction can go in either direction","the reaction happens twice","the products are doubled","the reaction is very fast","Water can split into ions, and the ions can rejoin into water."],
+ ["2.2","In pure water, about how many water molecules split into ions?","About 1 in 550 million","About half","About 1 in 10","Every molecule","It's rare, and it makes equal numbers of H⁺ and OH⁻."],
+ ["2.2","Pure water has a pH of 7 because…","it has equal numbers of H⁺ and OH⁻ ions","it has no ions at all","it has more H⁺ than OH⁻","it has more OH⁻ than H⁺","Equal ions = neutral."],
+ ["2.2","The pH scale ranges from…","0 to 14","1 to 10","0 to 100","−7 to 7","7 is the neutral midpoint."],
+ ["2.2","A solution with more OH⁻ ions than H⁺ ions is…","basic","acidic","neutral","saturated","More OH⁻ = basic, pH above 7."],
+ ["2.2","A pH 4 solution has how many times as many H⁺ ions as a pH 5 solution?","10 times","2 times","4 times","100 times","Each step on the pH scale is a factor of 10."],
+ ["2.2","A pH 3 solution has how many times as many H⁺ ions as a pH 5 solution?","100 times","2 times","10 times","1,000 times","Two steps: 10 × 10 = 100."],
+ ["2.2","The lower the pH, the…","more acidic the solution","more basic the solution","fewer H⁺ ions it has","closer it is to neutral","Low pH = lots of H⁺ = more acidic."],
+ ["2.2","On Figure 2-10, which is the most basic?","Oven cleaner","Bleach","Soap","Seawater","Oven cleaner sits at the top of the scale."],
+ ["2.2","Which of these is closest to neutral (pH 7)?","Human blood","Lemon juice","Bleach","Stomach acid","Blood is just above 7, near pure water."],
+ ["2.2","Stomach acid (HCl) has a pH of about…","1.5–3.0","6.5–7.5","7.4","11–14","It's a strong acid that helps digest food."],
+ ["2.3","Organic chemistry today refers to the chemistry of…","carbon","living things only","water","oxygen","The name is historical; it now means carbon chemistry."],
+ ["2.3","How many valence electrons does carbon have?","4","2","6","8","That's why carbon forms so many strong covalent bonds."],
+ ["2.3","What makes carbon able to form huge molecules?","Carbon atoms can bond to each other in long chains and rings","Carbon only forms ionic bonds","Carbon has no valence electrons","Carbon dissolves in water","Carbon-carbon bonds can be single, double, or triple."],
+ ["2.3","In a molecular drawing, each line between atoms stands for…","one covalent bond","one electron","one ionic bond","one hydrogen bond","Figure 2-12."],
+ ["2.3","The process of joining small molecules into large ones is called…","polymerization","dissolving","ionization","buffering","Monomers join to form polymers."],
+ ["2.3","Which is NOT one of the four major macromolecules?","Water","Lipids","Proteins","Nucleic acids","The four: carbohydrates, lipids, nucleic acids, proteins."],
+ ["2.3","Carbohydrates are made of C, H, and O, usually in a ratio of…","1 : 2 : 1","2 : 1 : 2","1 : 1 : 1","4 : 2 : 1","Example: glucose."],
+ ["2.3","Table sugar (sucrose) is a disaccharide made of…","glucose and fructose","glucose and galactose","two amino acids","glycerol and fatty acids","Two simple sugars joined together."],
+ ["2.3","Which carbohydrate gives plants strength and is found in wood and paper?","Cellulose","Starch","Glucose","Sucrose","Starch stores sugar; cellulose provides structure."],
+ ["2.3","Many animals store extra sugar in a polysaccharide called…","glycogen","cellulose","sucrose","keratin","Plants use starch instead."],
+ ["2.3","When blood glucose runs low, the body…","breaks down glycogen into glucose and releases it into the blood","builds more glycogen","breaks down cellulose","makes more fat","Glycogen is the body's sugar reserve."],
+ ["2.3","Starch is a polymer made of…","glucose molecules","amino acids","nucleotides","fatty acids","Potatoes, bread, and pasta are mostly starch."],
+ ["2.3","Macromolecules formed by joining many monosaccharides are called…","polysaccharides","disaccharides","polypeptides","nucleic acids","Also called complex carbohydrates."],
+ ["2.3","Lipids are made mostly of…","carbon and hydrogen","nitrogen and oxygen","amino acids","nucleotides","And they generally don't dissolve in water."],
+ ["2.3","Lipid molecules like triglycerides are built from…","fatty acids and glycerol","amino acids","nucleotides","glucose molecules","Figure 2-15: three fatty acids attached to glycerol."],
+ ["2.3","Steroid hormones are lipids that function as…","chemical messengers","energy stores in muscles","genetic information","structural fibers in plants","Many lipids, such as steroid hormones, carry signals."],
+ ["2.3","Which is NOT a job of lipids?","Storing genetic information","Storing energy","Forming biological membranes","Forming waterproof coverings","Storing genetic information is the job of nucleic acids."],
+ ["2.3","A fat whose fatty acids have only single carbon-carbon bonds is…","saturated","unsaturated","polyunsaturated","a nucleic acid","Saturated = max hydrogen, single bonds only."],
+ ["2.3","Olive oil is liquid at room temperature because its fatty acids are…","unsaturated","saturated","proteins","polysaccharides","Double bonds = unsaturated = tends to be liquid."],
+ ["2.3","Which is NOT part of a nucleotide?","An amino group","A 5-carbon sugar","A phosphate group","A nitrogenous base","Amino groups are part of amino acids."],
+ ["2.3","What is the main job of nucleic acids?","Store and transmit genetic information","Store energy as fat","Form waterproof coverings","Give plants strength","DNA and RNA carry hereditary information."],
+ ["2.3","DNA contains the sugar…","deoxyribose","ribose","glucose","fructose","RNA contains ribose."],
+ ["2.3","Which nucleotide captures and transfers chemical energy?","ATP","DNA","Glucose","Keratin","Adenosine triphosphate."],
+ ["2.3","Proteins are polymers of…","amino acids","nucleotides","simple sugars","fatty acids","Joined by peptide bonds."],
+ ["2.3","Which element do proteins contain that carbohydrates usually don't?","Nitrogen","Carbon","Hydrogen","Oxygen","Proteins contain N along with C, H, and O."],
+ ["2.3","When a peptide bond forms, what molecule is released?","Water (H₂O)","Carbon dioxide","Oxygen gas","Glucose","Amino group + carboxyl group → peptide bond + water."],
+ ["2.3","The part of an amino acid that differs from one amino acid to another is the…","R-group","amino group","carboxyl group","peptide bond","Everything else is the same."],
+ ["2.3","A protein's primary structure is…","its sequence of amino acids","its 3-D shape","how multiple chains fit together","the coiling of the chain","Secondary = folding/coiling; tertiary = full 3-D shape."],
+ ["2.3","Hemoglobin's job is to…","carry oxygen in the blood","store genetic information","digest food","make cell walls","Its iron-containing heme groups bind oxygen."],
+ ["2.3","Hair and nails are made of a protein called…","keratin","cellulose","hemoglobin","starch","Figure 2-19."],
+ ["2.3","Which four elements make up 96% of living things?","O, C, H, N","Ca, P, K, S","Na, Cl, Mg, Fe","C, H, Fe, Zn","Oxygen, carbon, hydrogen, nitrogen."],
+ ["2.3","Iron is only 0.006% of body weight. Its job is to…","help carry oxygen in the blood","build bones and teeth","regulate fluid balance","form amino acids","Small amount, big importance."],
+ ["2.4","A chemical reaction involves changes in…","the chemical bonds that join atoms","the number of protons in atoms","the mass of the atoms","the color of the compounds","Bonds break and new bonds form."],
+ ["2.4","During a chemical reaction, mass and energy are…","conserved","destroyed","created","doubled","They're neither created nor destroyed."],
+ ["2.4","In 2H₂ + O₂ → 2H₂O, water is the…","product","reactant","catalyst","enzyme","Products are what the reaction makes."],
+ ["2.4","Reactions that release energy often…","occur on their own (spontaneously)","need an electric current","never happen in living things","can't be reversed","Energy-absorbing reactions are the ones that need an energy source."],
+ ["2.4","Splitting water into hydrogen and oxygen gas…","absorbs a lot of energy","releases heat and light","happens on its own","needs no energy","The only practical way is passing electric current through water."],
+ ["2.4","Plants get the energy for their reactions from…","sunlight","eating other organisms","the soil","carbon dioxide","Animals eat plants or other animals."],
+ ["2.4","The energy needed to get a reaction started is called…","activation energy","heat capacity","chemical energy","potential energy","A flame supplies the activation energy to burn paper."],
+ ["2.4","Which reactions have an activation energy?","Both energy-releasing and energy-absorbing reactions","Only energy-releasing reactions","Only energy-absorbing reactions","Only reactions with enzymes","Figure 2-22 shows both."],
+ ["2.4","On an energy graph, a reaction whose products end lower than its reactants…","releases energy","absorbs energy","has no activation energy","can't happen","Lower-energy products = energy was released."],
+ ["2.4","A catalyst speeds up a reaction by…","lowering the activation energy","raising the activation energy","being used up in the reaction","adding more reactants","Catalysts aren't consumed."],
+ ["2.4","Most enzymes are…","proteins","lipids","carbohydrates","nucleic acids","Enzymes are biological catalysts."],
+ ["2.4","Carbonic anhydrase speeds up the reaction of CO₂ and water by about…","10 million times","10 times","1,000 times","2 times","That lets CO₂ leave the blood quickly."],
+ ["2.4","The reactants in an enzyme-catalyzed reaction are called…","substrates","products","active sites","catalysts","Example: CO₂ and water for carbonic anhydrase."],
+ ["2.4","For carbonic anhydrase, the substrates are…","carbon dioxide and water","carbonic acid only","glucose and oxygen","hydrogen and oxygen","They react to form carbonic acid."],
+ ["2.4","Substrates bind to the part of the enzyme called the…","active site","R-group","peptide bond","nucleus","Shapes fit like a lock and key."],
+ ["2.4","The fit between an enzyme's active site and its substrates is often compared to a…","lock and key","magnet","sponge","ladder","Complementary shapes."],
+ ["2.4","High temperature and extreme pH can stop enzymes by…","unfolding the protein and disrupting the active site","adding more substrates","making the enzyme a lipid","lowering activation energy","They weaken hydrogen bonds that hold the shape."],
+ ["2.4","Most human enzymes work best at about…","37°C","0°C","100°C","20°C","Normal body temperature."],
+ ["2.4","Pepsin, a stomach enzyme, works best in…","acidic conditions","basic conditions","neutral water","cold temperatures","The stomach is very acidic."],
+ ["2.4","Enzymes are usually very specific, meaning each one…","catalyzes only one reaction","works on any reaction","is used up after one reaction","only works outside cells","That's why their names often come from the reaction."]
+];
+
+const store = {
+  get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},
+  set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+};
+
+let lesson = store.get("lesson","all");
+let mode = store.get("mode","vocab");
+let known = new Set(store.get("known",[]));
+let deck=[], idx=0, flipped=false, onlyLeft=false;
+let quiz=null;
+
+const app=document.getElementById("app");
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const inLesson=l=>lesson==="all"||l===lesson;
+const keyOf=c=>c.kind+"|"+c.front;
+
+function source(){
+  const src = mode==="vocab"?VOCAB:CONCEPTS;
+  return src.filter(r=>inLesson(r[0])).map(r=>({l:r[0],front:r[1],back:r[2],ex:r[3],kind:mode}));
+}
+function buildDeck(doShuffle){
+  let cards=source();
+  if(onlyLeft) cards=cards.filter(c=>!known.has(keyOf(c)));
+  deck = doShuffle?shuffle(cards):cards; idx=0; flipped=false;
+}
+
+function renderControls(){
+  const row=document.getElementById("lessonRow");
+  row.innerHTML="";
+  [["all","All lessons"],...Object.entries(LESSONS)].forEach(([v,label])=>{
+    const b=document.createElement("button");b.className="chip";b.textContent=label;
+    b.setAttribute("aria-pressed",lesson===v);
+    b.onclick=()=>{lesson=v;store.set("lesson",v);start()};
+    row.appendChild(b);
+  });
+  document.querySelectorAll("#modeTabs button").forEach(b=>{
+    b.setAttribute("aria-pressed",b.dataset.mode===mode);
+    b.onclick=()=>{mode=b.dataset.mode;store.set("mode",mode);start()};
+  });
+}
+
+function start(){ renderControls(); if(mode==="quiz"){newQuiz()} else {onlyLeft=false;buildDeck(false);renderCards()} }
+
+function renderCards(){
+  const all=source(); const done=all.filter(c=>known.has(keyOf(c))).length;
+  if(!deck.length){
+    app.innerHTML=`<div class="qbox empty"><div class="score">Nice!</div><p>You've marked every card in this set as known.</p>
+      <div class="btns"><button class="btn" id="again">Study all again</button><button class="btn" id="reset">Reset progress</button></div></div>`;
+    document.getElementById("again").onclick=()=>{onlyLeft=false;buildDeck(true);renderCards()};
+    document.getElementById("reset").onclick=resetProgress;
+    return;
+  }
+  const c=deck[idx];
+  const isQ=mode==="concepts";
+  app.innerHTML=`
+    <div class="bar"><i style="width:${all.length?Math.round(done/all.length*100):0}%"></i></div>
+    <div class="meta"><span>Card ${idx+1} of ${deck.length}${onlyLeft?" (still learning)":""}</span><span>${done} of ${all.length} known</span></div>
+    <div class="scene" id="scene" role="button" tabindex="0" aria-label="Flip card">
+      <div class="card${flipped?" flipped":""}" id="card">
+        <div class="face front${isQ?" q":""}"><span class="tag">Lesson ${c.l}</span><div class="term">${esc(c.front)}</div></div>
+        <div class="face back"><span class="tag">${esc(isQ?"Answer":c.front)}</span><p class="def">${esc(c.back)}</p>${c.ex?`<p class="ex">${esc(c.ex)}</p>`:""}</div>
+      </div>
+    </div>
+    <p class="hint">Tap the card to flip it</p>
+    <div class="btns">
+      <button class="btn bad" id="again">Study again</button>
+      <button class="btn good" id="gotit">Got it</button>
+    </div>
+    <div class="tools">
+      <button class="link" id="prev">Back</button>
+      <button class="link" id="shuf">Shuffle</button>
+      <button class="link" id="left">${onlyLeft?"Show all cards":"Only cards I'm still learning"}</button>
+      <button class="link" id="reset">Reset progress</button>
+    </div>`;
+  const scene=document.getElementById("scene");
+  const flip=()=>{flipped=!flipped;document.getElementById("card").classList.toggle("flipped",flipped)};
+  scene.onclick=flip;
+  scene.onkeydown=e=>{if(e.key===" "||e.key==="Enter"){e.preventDefault();flip()}};
+  document.getElementById("gotit").onclick=()=>{known.add(keyOf(c));store.set("known",[...known]);advance(true)};
+  document.getElementById("again").onclick=()=>{known.delete(keyOf(c));store.set("known",[...known]);advance(false)};
+  document.getElementById("prev").onclick=()=>{if(idx>0){idx--;flipped=false;renderCards()}};
+  document.getElementById("shuf").onclick=()=>{buildDeck(true);renderCards()};
+  document.getElementById("left").onclick=()=>{onlyLeft=!onlyLeft;buildDeck(true);renderCards()};
+  document.getElementById("reset").onclick=resetProgress;
+}
+function advance(gotIt){
+  if(onlyLeft&&gotIt){deck.splice(idx,1);if(idx>=deck.length)idx=0}
+  else{idx=(idx+1)%deck.length}
+  flipped=false;renderCards();
+}
+function resetProgress(){
+  source().forEach(c=>known.delete(keyOf(c)));store.set("known",[...known]);
+  onlyLeft=false;buildDeck(false);renderCards();
+}
+
+function newQuiz(retryItems){
+  const pool = retryItems || QUIZ.filter(q=>inLesson(q[0]));
+  quiz={items:shuffle(pool).map(q=>({l:q[0],q:q[1],right:q[2],opts:shuffle([q[2],q[3],q[4],q[5]]),ex:q[6],raw:q})),i:0,score:0,missed:[],answered:false};
+  renderQuiz();
+}
+function renderQuiz(){
+  if(quiz.i>=quiz.items.length){
+    const n=quiz.items.length;
+    app.innerHTML=`<div class="qbox empty"><p>Your score</p><div class="score">${quiz.score} / ${n}</div>
+      <p>${quiz.score===n?"Perfect. Every question right.":quiz.missed.length+" to review. Retry just those, or take the full quiz again."}</p>
+      <div class="btns">${quiz.missed.length?`<button class="btn bad" id="retry">Retry missed (${quiz.missed.length})</button>`:""}<button class="btn" id="full">New quiz</button></div></div>`;
+    const r=document.getElementById("retry"); if(r) r.onclick=()=>newQuiz(quiz.missed);
+    document.getElementById("full").onclick=()=>newQuiz();
+    return;
+  }
+  const it=quiz.items[quiz.i];
+  app.innerHTML=`
+    <div class="bar"><i style="width:${Math.round(quiz.i/quiz.items.length*100)}%"></i></div>
+    <div class="meta"><span>Question ${quiz.i+1} of ${quiz.items.length}</span><span>Score ${quiz.score}</span></div>
+    <div class="qbox">
+      <p class="qtext">${esc(it.q)}</p>
+      <div id="opts">${it.opts.map((o,k)=>`<button class="opt" data-k="${k}">${esc(o)}</button>`).join("")}</div>
+      <div id="fb"></div>
+    </div>`;
+  document.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{
+    if(quiz.answered) return; quiz.answered=true;
+    const pick=it.opts[+b.dataset.k]; const ok=pick===it.right;
+    document.querySelectorAll(".opt").forEach(x=>{x.disabled=true;if(it.opts[+x.dataset.k]===it.right)x.classList.add("right")});
+    if(ok) quiz.score++; else {b.classList.add("wrong");quiz.missed.push(it.raw)}
+    document.getElementById("fb").innerHTML=`<p class="explain${ok?"":" miss"}"><strong>${ok?"Correct.":"Not quite."}</strong> ${esc(it.ex)}</p>
+      <div class="btns" style="grid-template-columns:1fr;margin-top:12px"><button class="btn" id="next">${quiz.i+1<quiz.items.length?"Next question":"See score"}</button></div>`;
+    document.getElementById("next").onclick=()=>{quiz.i++;quiz.answered=false;renderQuiz()};
+    document.getElementById("next").focus();
+  });
+}
+
+start();
+</script>
+</body>
+</html>
